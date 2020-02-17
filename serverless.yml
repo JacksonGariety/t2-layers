@@ -1,0 +1,51 @@
+service: topsters2-layers
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  stage: prod
+  runtime: nodejs10.x
+  region: us-west-2
+
+layers:
+  canvas:
+    path: layers/canvas
+    name: canvas
+    compatibleRuntimes:
+      - nodejs12.x
+    allowedAccounts:
+      - '*'
+  canvas-lib64:
+    path: layers/canvas-lib64
+    name: canvas-lib64
+    compatibleRuntimes:
+      - nodejs12.x
+    allowedAccounts:
+      - '*'
+  fonts:
+    path: layers/fonts
+    name: fonts
+    compatibleRuntimes:
+      - nodejs12.x
+    allowedAccounts:
+      - '*'
+
+resources:
+  Outputs:
+    CanvasDashlib64LambdaLayerExport:
+        Value:
+          Ref: CanvasDashlib64LambdaLayer
+        Export:
+          Name: CanvasDashlib64LambdaLayer-${self:provider.stage}
+    CanvasLambdaLayerExport:
+        Value:
+          Ref: CanvasLambdaLayer
+        Export:
+          Name: CanvasLambdaLayer-${self:provider.stage}
+    FontsLambdaLayerExport:
+        Value:
+          Ref: FontsLambdaLayer
+        Export:
+          Name: FontsLambdaLayer-${self:provider.stage}
